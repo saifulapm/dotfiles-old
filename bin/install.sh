@@ -322,6 +322,13 @@ else
   ok "skipped"
 fi
 
+read -r -p "Do you want install keka? [y|N] " response
+if [[ $response =~ (y|yes|Y) ]];then
+  require_cask keka
+else
+  ok "skipped"
+fi
+
 read -r -p "Do you want install whatsapp? [y|N] " response
 if [[ $response =~ (y|yes|Y) ]];then
   require_cask whatsapp
