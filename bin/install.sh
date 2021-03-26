@@ -284,6 +284,23 @@ running "reading iterm settings"
 defaults read -app iTerm > /dev/null 2>&1;
 ok
 
+read -r -p "Do you want install alacritty? [y|N] " response
+if [[ $response =~ (y|yes|Y) ]];then
+  require_cask alacritty
+
+  running "setup Terminal Info"
+  git clone git clone https://github.com/alacritty/alacritty.git
+  cd alacritty
+  sudo tic -xe alacritty,alacritty-direct extra/alacritty.Info
+  cd .. && rm -rf alacritty
+else
+  ok "skipped"
+fi
+
+running "Configuration alacritty settings"
+ln -s $HOME/.dotfiles/config/alacritty  $HOME/.config/alacritty
+ok
+
 read -r -p "Do you want install google-chrome? [y|N] " response
 if [[ $response =~ (y|yes|Y) ]];then
   require_cask google-chrome
@@ -291,9 +308,46 @@ else
   ok "skipped"
 fi
 
+read -r -p "Do you want install zoom? [y|N] " response
+if [[ $response =~ (y|yes|Y) ]];then
+  require_cask zoom
+else
+  ok "skipped"
+fi
+
+read -r -p "Do you want install voov-meeting? [y|N] " response
+if [[ $response =~ (y|yes|Y) ]];then
+  require_cask voov-meeting
+else
+  ok "skipped"
+fi
+
+read -r -p "Do you want install whatsapp? [y|N] " response
+if [[ $response =~ (y|yes|Y) ]];then
+  require_cask whatsapp
+else
+  ok "skipped"
+fi
+
+
+read -r -p "Do you want install vlc? [y|N] " response
+if [[ $response =~ (y|yes|Y) ]];then
+  require_cask vlc
+else
+  ok "skipped"
+fi
+
+
 read -r -p "Do you want install vscode? [y|N] " response
 if [[ $response =~ (y|yes|Y) ]];then
   require_cask visual-studio-code
+else
+  ok "skipped"
+fi
+
+read -r -p "Do you want install rectangle? [y|N] " wxresponse
+if [[ $wxresponse =~ (y|yes|Y) ]];then
+  require_cask rectangle
 else
   ok "skipped"
 fi
@@ -308,3 +362,4 @@ fi
 brew update && brew upgrade && brew cleanup
 
 bot "All done"
+bot " Paid Recommended App: alfred"
