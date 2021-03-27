@@ -110,7 +110,7 @@ if [[ $? = 0 ]]; then
   if [[ ! "$firstname" ]]; then
     response='n'
   else
-    echo  "I see that your full name is $COL_YELLOW$firstname $lastname$COL_RESET"
+    printf  "I see that your full name is $COL_YELLOW$firstname $lastname$COL_RESET"
     read -r -p "Is this correct? [Y|n] " response
   fi
 
@@ -125,7 +125,7 @@ if [[ $? = 0 ]]; then
   if [[ ! $email ]]; then
     response='n'
   else
-    echo  "The best I can make out, your email address is $COL_YELLOW$email$COL_RESET"
+    printf  "The best I can make out, your email address is $COL_YELLOW$email$COL_RESET"
     read -r -p "Is this correct? [Y|n] " response
   fi
 
