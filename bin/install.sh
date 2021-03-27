@@ -285,7 +285,7 @@ if [[ $response =~ (y|yes|Y) ]];then
   require_cask alacritty
 
   running "setup Terminal Info"
-  git clone git clone https://github.com/alacritty/alacritty.git
+  git clone https://github.com/alacritty/alacritty.git
   cd alacritty
   sudo tic -xe alacritty,alacritty-direct extra/alacritty.Info
   cd .. && rm -rf alacritty
