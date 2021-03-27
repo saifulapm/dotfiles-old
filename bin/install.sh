@@ -261,10 +261,6 @@ require_brew neovim --HEAD
 running "Configruation nvim"
 git clone https://github.com/saifulapm/nvim ~/.config/nvim
 ok
-running "Install vim plugins"
-cd ~/.config/nvim
-make install
-cd -
 
 
 # ###########################################################
