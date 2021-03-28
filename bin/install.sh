@@ -270,16 +270,18 @@ require_brew neovim --HEAD
 running "Configruation nvim"
 git clone https://github.com/saifulapm/nvim ~/.config/nvim
 ok
-running "Install vim plugins"
-cd ~/.config/nvim
-make install
-cd -
 running "Install neovim Staff"
 pip3 install pynvim
 npm i -g neovim
 pip3 install neovim-remote
 ok
+running "Install vim plugins"
+cd ~/.config/nvim
+make install
+cd -
 
+brew tap shopify/shopify
+require_brew themekit
 
 # ###########################################################
 bot " Install Gui Applications"
