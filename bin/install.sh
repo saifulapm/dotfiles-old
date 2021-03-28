@@ -240,6 +240,11 @@ action "link .rgignore"
 ln -s  $HOME/.dotfiles/.rgignore $HOME/.rgignore
 ok
 
+action "link .env"
+ln -s  $HOME/.dotfiles/env/.env $HOME/.env
+ok
+
+
 action "Install tpm"
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 ok "when you open tmux,you must type prefix {default: Ctrl+space } + I to install tmux plugins"
@@ -260,6 +265,15 @@ require_brew  luajit --HEAD
 require_brew neovim --HEAD
 running "Configruation nvim"
 git clone https://github.com/saifulapm/nvim ~/.config/nvim
+ok
+running "Install vim plugins"
+cd ~/.config/nvim
+make install
+cd -
+running "Install neovim Staff"
+pip3 install pynvim
+npm i -g neovim
+pip3 install neovim-remote
 ok
 
 
