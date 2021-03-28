@@ -22,13 +22,13 @@ if ! xcode-select --print-path &> /dev/null; then
         sleep 5
     done
 
-    print_result $? ' XCode Command Line Tools Installed'
+    ok ' XCode Command Line Tools Installed'
 
     # Prompt user to agree to the terms of the Xcode license
     # https://github.com/alrra/dotfiles/issues/10
 
     sudo xcodebuild -license
-    print_result $? 'Agree with the XCode Command Line Tools licence'
+    ok 'Agree with the XCode Command Line Tools licence'
 
 fi
 
@@ -226,6 +226,10 @@ require_brew tmux
 require_brew grip
 require_brew fd
 require_brew lolcat
+require_brew php
+require_brew openssl
+require_brew httpd
+brew services start httpd
 require_brew tree
 require_brew fzf
 /usr/local/opt/fzf/install
@@ -385,5 +389,4 @@ fi
 
 brew update && brew upgrade && brew cleanup
 
-bot "All done"
-bot " Paid Recommended App: alfred"
+bot "All done => check https://gist.github.com/saifulapm/8ef9aade24b171ea204559165f663851"
