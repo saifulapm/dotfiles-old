@@ -280,8 +280,10 @@ cd ~/.config/nvim
 make install
 cd -
 
+action "Install Shopify Staff"
 brew tap shopify/shopify
 require_brew themekit
+require_brew shopify-cli
 
 # ###########################################################
 bot " Install Gui Applications"
