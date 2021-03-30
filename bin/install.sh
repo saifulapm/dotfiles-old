@@ -259,8 +259,9 @@ require_brew yarn
 require_brew lua
 require_brew ninja
 
-action "Install create-react-app"
+action "Install NPM Staff"
 npm install -g create-react-app
+npm install -g typescript typescript-language-server
 ok
 
 bot "Install neovim"
