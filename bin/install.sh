@@ -264,6 +264,9 @@ npm install -g create-react-app
 npm install -g typescript typescript-language-server
 ok
 
+bot "Install Macvim"
+require_cask macvim
+
 bot "Install neovim"
 npm i -g bash-language-server
 npm i -g intelephense
@@ -277,7 +280,7 @@ pip3 install pynvim
 npm i -g neovim
 pip3 install neovim-remote
 ok
-running "Install vim plugins"
+running "Install nvim plugins"
 cd ~/.config/nvim
 make install
 cd -
