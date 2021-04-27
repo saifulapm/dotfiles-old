@@ -228,8 +228,8 @@ require_brew fd
 require_brew lolcat
 require_brew php
 require_brew openssl
+require_brew mariadb
 require_brew httpd
-brew services start httpd
 require_brew tree
 require_brew fzf
 /usr/local/opt/fzf/install
@@ -280,10 +280,6 @@ pip3 install pynvim
 npm i -g neovim
 pip3 install neovim-remote
 ok
-running "Install nvim plugins"
-cd ~/.config/nvim
-make install
-cd -
 
 bot "Composer Install"
 php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
