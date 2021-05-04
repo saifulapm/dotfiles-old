@@ -358,6 +358,34 @@ else
   ok "skipped"
 fi
 
+read -r -p "Do you want install KeepYouAwake? [y|N] " response
+if [[ $response =~ (y|yes|Y) ]];then
+  require_cask keepingyouawake
+else
+  ok "skipped"
+fi
+
+read -r -p "Do you want install HTTP and GraphQL Client(insomnia)? [y|N] " response
+if [[ $response =~ (y|yes|Y) ]];then
+  require_cask insomnia
+else
+  ok "skipped"
+fi
+
+read -r -p "Do you want install VPN (tunnelblick)? [y|N] " response
+if [[ $response =~ (y|yes|Y) ]];then
+  require_cask tunnelblick
+else
+  ok "skipped"
+fi
+
+read -r -p "Do you want install PasswordManager (Pass? [y|N] " response
+if [[ $response =~ (y|yes|Y) ]];then
+  require_brew pass
+else
+  ok "skipped"
+fi
+
 read -r -p "Do you want install whatsapp? [y|N] " response
 if [[ $response =~ (y|yes|Y) ]];then
   require_cask whatsapp
