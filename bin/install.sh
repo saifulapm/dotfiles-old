@@ -405,6 +405,13 @@ else
   ok "skipped"
 fi
 
+read -r -p "Do you want install IINA Video Player? [y|N] " response
+if [[ $response =~ (y|yes|Y) ]];then
+  require_cask iina
+else
+  ok "skipped"
+fi
+
 read -r -p "Do you want install alfred? [y|N] " response
 if [[ $response =~ (y|yes|Y) ]];then
   require_cask alfred
