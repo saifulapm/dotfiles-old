@@ -382,6 +382,10 @@ fi
 read -r -p "Do you want install PasswordManager (Pass? [y|N] " response
 if [[ $response =~ (y|yes|Y) ]];then
   require_brew pass
+  brew tap amar1729/formulae
+  require_cask browserpass
+  PREFIX='/usr/local/opt/browserpass' make hosts-chrome-user -f '/usr/local/opt/browserpass/lib/browserpass/Makefile'
+  ln -s $HOME/Library/Mobile\ Documents/com~apple~CloudDocs/Passwords $HOME/.password-store
 else
   ok "skipped"
 fi

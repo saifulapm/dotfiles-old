@@ -2,6 +2,8 @@
 
 # You may need to manually set your language environment
 export LANG=en_US.UTF-8
+# gpg --full-generate-key
+export PASSWORD_STORE_DIR="$HOME/Library/Mobile Documents/com~apple~CloudDocs/Passwords"
 
 #Homebrew's sbin
 export PATH="/usr/local/sbin:$PATH"
