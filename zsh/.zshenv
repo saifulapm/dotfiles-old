@@ -11,6 +11,10 @@ export PATH="/usr/local/sbin:$PATH"
 # Flutter
 export PATH="$HOME/sdk/flutter/bin:$PATH"
 
+# Java
+# sudo ln -sfn /usr/local/opt/openjdk/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk.jdk
+export PATH="/usr/local/opt/openjdk/bin:$PATH"
+
 # Editor
 export EDITOR="nvim"
 export GIT_EDITOR="nvim"
