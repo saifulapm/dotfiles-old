@@ -7,6 +7,7 @@ alias la="ls -la"
 alias lt="ls --tree"
 alias php-config="vi /usr/local/etc/php/8.0/php.ini"
 alias php="/usr/local/bin/php"
+alias luamake=/Users/saiful/sdk/lua-language-server/3rd/luamake/luamake
 
 ### Added by Zinit's installer
 if [[ ! -f $HOME/.zinit/bin/zinit.zsh ]]; then

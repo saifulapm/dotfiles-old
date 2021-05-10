@@ -9,7 +9,7 @@ defaults write -g KeyRepeat -int 2 # normal minimum is 2 (30 ms)
 # ###########################################################
 # Install non-brew various tools (PRE-BREW Installs)
 # ###########################################################
-bot "ensuring build/install tools are available"
+info "ensuring build/install tools are available"
 if ! xcode-select --print-path &> /dev/null; then
 
     # Prompt user to install the XCode Command Line Tools
@@ -22,13 +22,13 @@ if ! xcode-select --print-path &> /dev/null; then
         sleep 5
     done
 
-    ok ' XCode Command Line Tools Installed'
+    success ' XCode Command Line Tools Installed'
 
     # Prompt user to agree to the terms of the Xcode license
     # https://github.com/alrra/dotfiles/issues/10
 
     sudo xcodebuild -license
-    ok 'Agree with the XCode Command Line Tools licence'
+    success 'Agree with the XCode Command Line Tools licence'
 
 fi
 
@@ -36,28 +36,28 @@ fi
 # install homebrew (CLI Packages)
 # ###########################################################
 
-running "checking homebrew..."
+info "checking homebrew..."
 brew_bin=$(which brew) 2>&1 > /dev/null
 if [[ $? != 0 ]]; then
-  action "installing homebrew"
+  warn "installing homebrew"
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   if [[ $? != 0 ]]; then
     error "unable to install homebrew, script $0 abort!"
     exit 2
   fi
 else
-  ok
-  bot "Homebrew"
+  success
+  info "Homebrew"
   read -r -p "run brew update && upgrade? [y|N] " response
   if [[ $response =~ (y|yes|Y) ]]; then
-    action "updating homebrew..."
+    warn "updating homebrew..."
     brew update
-    ok "homebrew updated"
-    action "upgrading brew packages..."
+    success "homebrew updated"
+    warn "upgrading brew packages..."
     brew upgrade
-    ok "brews upgraded"
+    success "brews upgraded"
   else
-    ok "skipped brew package upgrades."
+    success "skipped brew package upgrades."
   fi
 fi
 
@@ -72,20 +72,20 @@ brew doctor
 # skip those GUI clients, git command-line all the way
 require_brew git
 
-bot "OK, now I am going to update the .gitconfig for your user info:"
+info "success, now I am going to update the .gitconfig for your user info:"
 
 gitfile="$HOME/.gitconfig"
-running "link .gitconfig"
+info "link .gitconfig"
 if [ ! -f "gitfile" ]; then
   read -r -p "Seems like your gitconfig file exist,do you want delete it? [y|N] " response
   if [[ $response =~ (y|yes|Y) ]]; then
     rm -rf $HOME/.gitconfig
-    action "cp /git/.gitconfig ~/.gitconfig"
+    warn "cp /git/.gitconfig ~/.gitconfig"
     sudo cp $HOME/.dotfiles/git/.gitconfig  $HOME/.gitconfig
     ln -s $HOME/.dotfiles/git/.gitignore  $HOME/.gitignore
-    ok
+    success
   else
-    ok "skipped"
+    success "skipped"
   fi
 fi
 grep 'user = GITHUBUSER'  $HOME/.gitconfig > /dev/null 2>&1
@@ -120,7 +120,7 @@ if [[ $? = 0 ]]; then
   fi
   fullname="$firstname $lastname"
 
-  bot "Great $fullname, "
+  info "Great $fullname, "
 
   if [[ ! $email ]]; then
     response='n'
@@ -138,21 +138,21 @@ if [[ $? = 0 ]]; then
   fi
 
 
-  running "replacing items in .gitconfig with your info ($COL_YELLOW$fullname, $email, $githubuser$COL_RESET)"
+  info "replacing items in .gitconfig with your info ($COL_YELLOW$fullname, $email, $githubuser$COL_RESET)"
 
   # test if gnu-sed or MacOS sed
 
   sed -i "s/GITHUBFULLNAME/$firstname $lastname/" ./git/.gitconfig > /dev/null 2>&1 | true
   if [[ ${PIPESTATUS[0]} != 0 ]]; then
     echo
-    running "looks like you are using MacOS sed rather than gnu-sed, accommodating"
+    info "looks like you are using MacOS sed rather than gnu-sed, accommodating"
     sed -i '' "s/GITHUBFULLNAME/$firstname $lastname/"  $HOME/.gitconfig
     sed -i '' 's/GITHUBEMAIL/'$email'/'  $HOME/.gitconfig
     sed -i '' 's/GITHUBUSER/'$githubuser'/'  $HOME/.gitconfig
-    ok
+    success
   else
     echo
-    bot "looks like you are already using gnu-sed. woot!"
+    info "looks like you are already using gnu-sed. woot!"
     sed -i 's/GITHUBEMAIL/'$email'/'  $HOME/.gitconfig
     sed -i 's/GITHUBUSER/'$githubuser'/'  $HOME/.gitconfig
   fi
@@ -160,27 +160,27 @@ fi
 
 
 ###########################################################
-bot "update ruby"
+info "update ruby"
 ###########################################################
 
 RUBY_CONFIGURE_OPTS="--with-openssl-dir=`brew --prefix openssl` --with-readline-dir=`brew --prefix readline` --with-libyaml-dir=`brew --prefix libyaml`"
 require_brew ruby
 
 # ###########################################################
-bot "zsh setup"
+info "zsh setup"
 # ###########################################################
 
 require_brew zsh
 
 # symslink zsh config
 ZSHRC="$HOME/.zshrc"
-running "Configuring zsh"
+info "Configuring zsh"
 if [ ! -f "ZSHRC" ]; then
   read -r -p "Seems like your zshrc file exist,do you want delete it? [y|N] " response
   if [[ $response =~ (y|yes|Y) ]]; then
     rm -rf $HOME/.zshrc
     rm -rf $HOME/.zshenv
-    action "link zsh/.zshrc and zsh/.zshenv"
+    warn "link zsh/.zshrc and zsh/.zshenv"
     ln -s  $HOME/.dotfiles/zsh/.zshenv $HOME/.zshenv
     ln -s  $HOME/.dotfiles/zsh/.zshrc $HOME/.zshrc
     ln -s  $HOME/.dotfiles/zsh/.p10k-evilball.zsh $HOME/.p10k-evilball.zsh
@@ -193,27 +193,27 @@ if [ ! -f "ZSHRC" ]; then
     fi
     zinit install
   else
-    ok "skipped"
+    success "skipped"
   fi
 fi
 
 # ###########################################################
-bot "Install fonts"
+info "Install fonts"
 # ###########################################################
 read -r -p "Install fonts? [y|N] " response
 if [[ $response =~ (y|yes|Y) ]];then
-  bot "installing fonts"
+  info "installing fonts"
   # need fontconfig to install/build fonts
   require_brew fontconfig
   sh ./fonts/install.sh
   brew tap homebrew/cask-fonts
   require_cask font-aurulent-sans-mono-nerd-font
   require_cask font-hack-nerd-font
-  ok
+  success
 fi
 
 # ###########################################################
-bot " Install Develop Tools"
+info " Install Develop Tools"
 # ###########################################################
 require_brew curl
 require_brew wget
@@ -236,22 +236,22 @@ require_brew fzf
 brew install jesseduffield/lazygit/lazygit
 require_brew lsd
 
-action "link tmux conf"
+warn "link tmux conf"
 ln -s  $HOME/.dotfiles/tmux/.tmux.conf $HOME/.tmux.conf
-ok
+success
 
-action "link .rgignore"
+warn "link .rgignore"
 ln -s  $HOME/.dotfiles/.rgignore $HOME/.rgignore
-ok
+success
 
-action "link .env"
+warn "link .env"
 ln -s  $HOME/.dotfiles/env/.env $HOME/.env
-ok
+success
 
 
-action "Install tpm"
+warn "Install tpm"
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-ok "when you open tmux,you must type prefix {default: Ctrl+space } + I to install tmux plugins"
+success "when you open tmux,you must type prefix {default: Ctrl+space } + I to install tmux plugins"
 
 require_brew node
 require_brew yarn
@@ -259,29 +259,29 @@ require_brew yarn
 require_brew lua
 require_brew ninja
 
-action "Install NPM Staff"
+warn "Install NPM Staff"
 npm install -g create-react-app
 npm install -g typescript typescript-language-server
-ok
+success
 
-bot "Install Macvim"
+info "Install Macvim"
 require_cask macvim
 
-bot "Install neovim"
+info "Install neovim"
 npm i -g bash-language-server
 npm i -g intelephense
 require_brew  luajit --HEAD
 require_brew neovim --HEAD
-running "Configruation nvim"
+info "Configruation nvim"
 git clone https://github.com/saifulapm/nvim ~/.config/nvim
-ok
-running "Install neovim Staff"
+success
+info "Install neovim Staff"
 pip3 install pynvim
 npm i -g neovim
 pip3 install neovim-remote
-ok
+success
 
-bot "Composer Install"
+info "Composer Install"
 php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
 php -r "if (hash_file('sha384', 'composer-setup.php') === '756890a4488ce9024fc62c56153228907f1545c228516cbf63f885e036d37e9a59d27d63f46af1d4d07ee0f76181c7d3') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
 php composer-setup.php
@@ -291,92 +291,92 @@ composer global require php-stubs/wordpress-globals
 composer global require php-stubs/wordpress-stubs
 composer global require php-stubs/woocommerce-stubs
 
-action "Install Shopify Staff"
+warn "Install Shopify Staff"
 brew tap shopify/shopify
 require_brew themekit
 require_brew shopify-cli
 
 # ###########################################################
-bot " Install Gui Applications"
+info " Install Gui Applications"
 # ###########################################################
 
 read -r -p "Do you want install kitty? [y|N] " response
 if [[ $response =~ (y|yes|Y) ]];then
   require_cask kitty
 else
-  ok "skipped"
+  success "skipped"
 fi
-running "Configuration kitty settings"
+info "Configuration kitty settings"
 ln -s $HOME/.dotfiles/config/kitty  $HOME/.config/kitty
-ok
-running "reading iterm settings"
+success
+info "reading iterm settings"
 defaults read -app iTerm > /dev/null 2>&1;
-ok
+success
 
 read -r -p "Do you want install alacritty? [y|N] " response
 if [[ $response =~ (y|yes|Y) ]];then
   require_cask alacritty
 
-  running "setup Terminal Info"
+  info "setup Terminal Info"
   git clone https://github.com/alacritty/alacritty.git
   cd alacritty
   sudo tic -xe alacritty,alacritty-direct extra/alacritty.Info
   cd .. && rm -rf alacritty
 else
-  ok "skipped"
+  success "skipped"
 fi
 
-running "Configuration alacritty settings"
+info "Configuration alacritty settings"
 ln -s $HOME/.dotfiles/config/alacritty  $HOME/.config/alacritty
-ok
+success
 
 read -r -p "Do you want install google-chrome? [y|N] " response
 if [[ $response =~ (y|yes|Y) ]];then
   require_cask google-chrome
 else
-  ok "skipped"
+  success "skipped"
 fi
 
 read -r -p "Do you want install zoom? [y|N] " response
 if [[ $response =~ (y|yes|Y) ]];then
   require_cask zoom
 else
-  ok "skipped"
+  success "skipped"
 fi
 
 read -r -p "Do you want install voov-meeting? [y|N] " response
 if [[ $response =~ (y|yes|Y) ]];then
   require_cask voov-meeting
 else
-  ok "skipped"
+  success "skipped"
 fi
 
 read -r -p "Do you want install keka? [y|N] " response
 if [[ $response =~ (y|yes|Y) ]];then
   require_cask keka
 else
-  ok "skipped"
+  success "skipped"
 fi
 
 read -r -p "Do you want install KeepYouAwake? [y|N] " response
 if [[ $response =~ (y|yes|Y) ]];then
   require_cask keepingyouawake
 else
-  ok "skipped"
+  success "skipped"
 fi
 
 read -r -p "Do you want install HTTP and GraphQL Client(insomnia)? [y|N] " response
 if [[ $response =~ (y|yes|Y) ]];then
   require_cask insomnia
 else
-  ok "skipped"
+  success "skipped"
 fi
 
 read -r -p "Do you want install VPN (tunnelblick)? [y|N] " response
 if [[ $response =~ (y|yes|Y) ]];then
   require_cask tunnelblick
 else
-  ok "skipped"
+  success "skipped"
 fi
 
 read -r -p "Do you want install PasswordManager (Pass? [y|N] " response
@@ -387,14 +387,14 @@ if [[ $response =~ (y|yes|Y) ]];then
   PREFIX='/usr/local/opt/browserpass' make hosts-chrome-user -f '/usr/local/opt/browserpass/lib/browserpass/Makefile'
   ln -s $HOME/Library/Mobile\ Documents/com~apple~CloudDocs/Passwords $HOME/.password-store
 else
-  ok "skipped"
+  success "skipped"
 fi
 
 read -r -p "Do you want install whatsapp? [y|N] " response
 if [[ $response =~ (y|yes|Y) ]];then
   require_cask whatsapp
 else
-  ok "skipped"
+  success "skipped"
 fi
 
 
@@ -402,21 +402,21 @@ read -r -p "Do you want install vlc? [y|N] " response
 if [[ $response =~ (y|yes|Y) ]];then
   require_cask vlc
 else
-  ok "skipped"
+  success "skipped"
 fi
 
 read -r -p "Do you want install IINA Video Player? [y|N] " response
 if [[ $response =~ (y|yes|Y) ]];then
   require_cask iina
 else
-  ok "skipped"
+  success "skipped"
 fi
 
 read -r -p "Do you want install alfred? [y|N] " response
 if [[ $response =~ (y|yes|Y) ]];then
   require_cask alfred
 else
-  ok "skipped"
+  success "skipped"
 fi
 
 
@@ -424,23 +424,23 @@ read -r -p "Do you want install vscode? [y|N] " response
 if [[ $response =~ (y|yes|Y) ]];then
   require_cask visual-studio-code
 else
-  ok "skipped"
+  success "skipped"
 fi
 
 read -r -p "Do you want install rectangle? [y|N] " wxresponse
 if [[ $wxresponse =~ (y|yes|Y) ]];then
   require_cask rectangle
 else
-  ok "skipped"
+  success "skipped"
 fi
 
 read -r -p "Do you want install wechat? [y|N] " wxresponse
 if [[ $wxresponse =~ (y|yes|Y) ]];then
   require_cask wechat
 else
-  ok "skipped"
+  success "skipped"
 fi
 
 brew update && brew upgrade && brew cleanup
 
-bot "All done => check https://gist.github.com/saifulapm/8ef9aade24b171ea204559165f663851"
+install_done
