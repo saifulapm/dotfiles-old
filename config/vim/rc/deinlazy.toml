@@ -1,0 +1,516 @@
+#[[plugins]]
+#repo = 'Shougo/neoyank.vim'
+#on_event = 'TextYankPost'
+#on_source = ['denite.nvim']
+
+[[plugins]]
+repo = 'Shougo/echodoc.vim'
+on_event = 'CompleteDone'
+hook_source = '''
+  let g:echodoc#type = 'virtual'
+  call echodoc#enable()
+'''
+
+[[plugins]]
+repo = 'Shougo/defx.nvim'
+hook_add = '''
+  nnoremap <silent>   [Space]f
+  \ <Cmd>Defx -listed -resume -buffer-name=win-`win_getid()`<CR>
+'''
+hook_source = '''
+  call defx#custom#column('mark', {
+          \ 'readonly_icon': '✗',
+          \ 'selected_icon': '✓',
+          \ })
+  call defx#custom#column('icon', {
+          \ 'directory_icon': '▸',
+          \ 'opened_icon': '▾',
+          \ 'root_icon': '=',
+          \ })
+'''
+[plugins.ftplugin]
+defx = '''
+  " Define mappings
+  nnoremap <silent><buffer><expr> <CR>
+  \ defx#is_binary() ?
+  \ defx#do_action('execute_system') :
+  \ defx#do_action('open')
+  nnoremap <silent><buffer><expr> +
+  \ defx#do_action('open', 'choose')
+  nnoremap <silent><buffer><expr> c
+  \ defx#do_action('copy')
+  nnoremap <silent><buffer><expr> !
+  \ defx#do_action('execute_command')
+  nnoremap <silent><buffer><expr> &
+  \ defx#do_action('execute_command', ['', 'async'])
+  nnoremap <silent><buffer><expr> m
+  \ defx#do_action('move')
+  nnoremap <silent><buffer><expr> p
+  \ defx#do_action('paste')
+  nnoremap <silent><buffer><expr> l
+  \ defx#do_action('open')
+  nnoremap <silent><buffer><expr> E
+  \ defx#do_action('open', 'vsplit')
+  nnoremap <silent><buffer><expr> L
+  \ defx#do_action('link')
+  nnoremap <silent><buffer><expr> P
+  \ defx#do_action('preview')
+  nnoremap <silent><buffer><expr> o
+  \ defx#do_action('open_tree', ['nested', 'toggle'])
+  nnoremap <silent><buffer><expr> O
+  \ defx#do_action('open_tree', 'recursive')
+  nnoremap <silent><buffer><expr> K
+  \ defx#do_action('new_directory')
+  nnoremap <silent><buffer><expr> N
+  \ defx#do_action('new_file')
+  nnoremap <silent><buffer><expr> M
+  \ defx#do_action('new_multiple_files')
+  nnoremap <silent><buffer><expr> C
+  \ defx#do_action('toggle_columns', 'mark:filename:type:size:time')
+  nnoremap <silent><buffer><expr> S
+  \ defx#do_action('toggle_sort', 'Time')
+  nnoremap <silent><buffer><expr> se
+  \ defx#do_action('add_session')
+  nnoremap <silent><buffer><expr> sl
+  \ defx#do_action('load_session')
+  nnoremap <silent><buffer><expr> d
+  \ defx#do_action('remove_trash')
+  nnoremap <silent><buffer><expr> r
+  \ defx#do_action('rename')
+  nnoremap <silent><buffer><expr> x
+  \ defx#do_action('execute_system')
+  nnoremap <silent><buffer><expr> >
+  \ defx#do_action('toggle_ignored_files')
+  nnoremap <silent><buffer><expr> <
+  \ defx#do_action('change_ignored_files')
+  nnoremap <silent><buffer><expr> .
+  \ defx#do_action('repeat')
+  nnoremap <silent><buffer><expr> yy
+  \ defx#do_action('yank_path')
+  nnoremap <silent><buffer><expr> h
+  \ defx#do_action('cd', ['..'])
+  nnoremap <silent><buffer><expr> ~
+  \ defx#do_action('cd')
+  nnoremap <silent><buffer><expr> \
+  \ defx#do_action('cd', getcwd())
+  nnoremap <silent><buffer><expr> q
+  \ defx#do_action('quit')
+  nnoremap <silent><buffer><expr> <Space>
+  \ defx#do_action('toggle_select') . 'j'
+  nnoremap <silent><buffer><expr> *
+  \ defx#do_action('toggle_select_all')
+  nnoremap <silent><buffer><expr> j
+  \ line('.') == line('$') ? 'gg' : 'j'
+  nnoremap <silent><buffer><expr> k
+  \ line('.') == 1 ? 'G' : 'k'
+  nnoremap <silent><buffer><expr> <C-l>
+  \ defx#do_action('redraw')
+  xnoremap <silent><buffer><expr> <CR>
+  \ defx#do_action('toggle_select_visual')
+  nnoremap <silent><buffer><expr> <C-g>
+  \ defx#do_action('print')
+  nnoremap <silent><buffer><expr> <Tab> winnr('$') != 1 ?
+  \ '<Cmd>wincmd w<CR>' :
+  \ '<Cmd>Defx -buffer-name=temp -split=vertical<CR>'
+  nnoremap <silent><buffer> gr <Cmd>call denite#start(
+  \ [{'name': 'grep', 'args': [map(defx#get_selected_candidates(),
+  \ { _, val -> val['action__path'] })]}])<CR>
+'''
+
+#[[plugins]]
+#repo = 'Shougo/neosnippet.vim'
+#depends = ['neosnippet-snippets', 'context_filetype.vim']
+#on_event = 'InsertCharPre'
+#on_ft = 'snippet'
+#hook_source = '''
+#  "imap <silent>L     <Plug>(neosnippet_jump_or_expand)
+#  "smap <silent>L     <Plug>(neosnippet_jump_or_expand)
+#  "xmap <silent>L     <Plug>(neosnippet_expand_target)
+#
+#  let g:neosnippet#enable_snipmate_compatibility = 1
+#  let g:neosnippet#enable_completed_snippet = 1
+#  let g:neosnippet#expand_word_boundary = 1
+#  let g:neosnippet#snippets_directory = '~/.vim/my-snippets'
+#'''
+
+[[plugins]]
+repo = 'Shougo/deoppet.nvim'
+depends = ['neosnippet-snippets', 'context_filetype.vim']
+on_event = 'InsertEnter'
+if = 'has("nvim")'
+hook_source = '''
+  " Test
+  "imap L  <Plug>(deoppet_expand)
+  imap <expr> L  deoppet#expandable() ?
+  \ "\<Plug>(deoppet_expand)" : ''
+  imap <C-f>  <Plug>(deoppet_jump_forward)
+  imap <C-b>  <Plug>(deoppet_jump_backward)
+  smap <C-f>  <Plug>(deoppet_jump_forward)
+  smap <C-b>  <Plug>(deoppet_jump_backward)
+  xmap <C-l>  <Plug>(deoppet_select_text)
+  xmap <C-x>  <Plug>(deoppet_cut_text)
+  call deoppet#initialize()
+
+  call deoppet#custom#option('snippets',
+          \ [{ 'path': expand('~/.vim/my-snippets')}] +
+          \ map(globpath(&runtimepath, 'neosnippets', 1, 1),
+          \     { _, val -> { 'path': val } }))
+'''
+
+[[plugins]]
+repo = 'Shougo/neosnippet-snippets'
+
+[[plugins]]
+repo = 'Shougo/denite.nvim'
+on_cmd = 'Denite'
+hook_source = 'source ~/.vim/rc/plugins/denite.rc.vim'
+hook_add = '''
+  nnoremap <silent> ;r
+        \ <Cmd>Denite -buffer-name=register register<CR>
+  xnoremap <silent> ;r
+        \ <Cmd>Denite -default-action=replace -buffer-name=register
+        \ register<CR>
+
+  nnoremap <silent> s<Space>
+  \ <Cmd>Denite -buffer-name=files file/rec:~/.vim/rc<CR>
+  nnoremap <silent><expr> / wordcount().chars > 30000 ?
+  \ "\<Cmd>Denite -buffer-name=search -start-filter
+  \  -search line/external\<CR>" :
+  \ "\<Cmd>Denite -buffer-name=search -start-filter -search line\<CR>"
+  nnoremap <silent><expr> * wordcount().chars > 30000 ?
+  \ "\<Cmd>DeniteCursorWord -buffer-name=search -search line/external\<CR>" :
+  \ "\<Cmd>DeniteCursorWord -buffer-name=search -search line\<CR>"
+  xnoremap <silent> *
+  \ "qy:Denite -input=`@q` -buffer-name=search -search line<CR>
+  nnoremap <silent><expr> ss finddir('.git', ';') != '' ?
+  \ "\<Cmd>Denite -sorters=sorter/rank -unique -buffer-name=files
+  \  file/point file/old file/dirty file/git file file:new\<CR>" :
+  \ "\<Cmd>Denite -sorters=sorter/rank -unique -buffer-name=files
+  \  file/point file/old file file:new\<CR>"
+  nnoremap <silent> n
+  \ <Cmd>Denite -buffer-name=search -resume<CR>
+  nnoremap <silent> sf
+  \ <Cmd>Denite -buffer-name=files -resume<CR>
+
+  nnoremap <silent><expr> tt  &filetype == 'help' ?  "g\<C-]>" :
+  \ "\<Cmd>DeniteCursorWord -buffer-name=tag -immediately tag:include\<CR>"
+  nnoremap <silent><expr> tp  &filetype == 'help' ?
+  \ "\<Cmd>pop\<CR>" : "\<Cmd>Denite jump\<CR>"
+
+  nnoremap <silent> sn <Cmd>Denite dein<CR>
+  nnoremap <silent> ;g <Cmd>Denite -buffer-name=search
+  \ -no-empty grep<CR>
+  nnoremap <silent> ;w <Cmd>DeniteCursorWord -buffer-name=search
+  \ -no-empty grep<CR>
+  nnoremap <silent> <C-t> <Cmd>terminal<CR>
+  nnoremap <silent> <C-k> <Cmd>Denite change jump<CR>
+'''
+
+[plugins.ftplugin]
+denite = '''
+  " Define mappings
+  nnoremap <silent><buffer><expr> <CR>
+  \ denite#do_map('do_action')
+  nnoremap <silent><buffer><expr> a
+  \ denite#do_map('choose_action')
+  nnoremap <silent><buffer><expr> d
+  \ denite#do_map('do_action', 'delete')
+  nnoremap <silent><buffer><expr> e
+  \ denite#do_map('do_action', 'edit')
+  nnoremap <silent><buffer><expr> p
+  \ denite#do_map('do_action', 'preview')
+  nnoremap <silent><buffer><expr> P
+  \ denite#do_map('do_action', 'preview_bat')
+  nnoremap <silent><buffer><expr> N
+  \ denite#do_map('do_action', 'new')
+  nnoremap <silent><buffer><expr> q
+  \ denite#do_map('quit')
+  nnoremap <silent><buffer><expr> '
+  \ denite#do_map('quick_move')
+  nnoremap <silent><buffer><expr> i
+  \ denite#do_map('open_filter_buffer')
+  nnoremap <silent><buffer><expr> <Space>
+  \ denite#do_map('toggle_select').'j'
+  nnoremap <silent><buffer><expr> r
+  \ denite#do_map('do_action', 'quickfix')
+  nnoremap <silent><buffer><expr> <C-r>
+  \ denite#do_map('restore_sources')
+  nnoremap <silent><buffer><expr> <C-l>
+  \ denite#do_map('redraw')
+'''
+
+[[plugins]]
+repo = 'Shougo/context_filetype.vim'
+hook_source = '''
+let g:context_filetype#ignore_patterns = {
+    \ 'toml': ['^\s*#\s*'],
+    \ }
+'''
+
+[[plugins]]
+repo = 'Shougo/junkfile.vim'
+on_source = 'denite.nvim'
+hook_add = '''
+  nnoremap <silent> se <Cmd>Denite junkfile:new junkfile<CR>
+'''
+
+[[plugins]]
+repo = 'Shougo/neco-vim'
+on_ft = ['vim', 'toml']
+
+[[plugins]]
+repo = 'kana/vim-niceblock'
+on_map = {x = '<Plug>'}
+hook_add = '''
+  xmap I  <Plug>(niceblock-I)
+  xmap A  <Plug>(niceblock-A)
+'''
+
+[[plugins]]
+repo = 'thinca/vim-qfreplace'
+on_ft = ['qf']
+[plugins.ftplugin]
+qf = '''
+  nnoremap <buffer> r <Cmd>Qfreplace<CR>
+'''
+
+[[plugins]]
+repo = 'tyru/open-browser.vim'
+
+[[plugins]]
+repo = 'rhysd/accelerated-jk'
+on_map = {n = '<Plug>'}
+hook_add = '''
+  nmap <silent>j <Plug>(accelerated_jk_gj)
+  nmap <silent>k <Plug>(accelerated_jk_gk)
+'''
+
+[[plugins]]
+repo = 'rhysd/vim-operator-surround'
+depends = 'vim-operator-user'
+on_map = {n = '<Plug>'}
+hook_add = '''
+  nmap <silent>sa <Plug>(operator-surround-append)
+  nmap <silent>sd <Plug>(operator-surround-delete)a
+  nmap <silent>sr <Plug>(operator-surround-replace)a
+  nmap <silent>sc <Plug>(operator-surround-replace)a
+'''
+
+[[plugins]]
+repo = 'kana/vim-operator-replace'
+depends = 'vim-operator-user'
+on_map = {n = '<Plug>'}
+hook_add = '''
+  map R <Plug>(operator-replace)
+'''
+
+[[plugins]]
+repo = 'kannokanno/previm'
+on_cmd = 'PrevimOpen'
+depends = 'open-browser.vim'
+
+[[plugins]]
+repo = 'osyo-manga/vim-jplus'
+on_map = {n = '<Plug>'}
+hook_add = '''
+  nmap J <Plug>(jplus)
+'''
+
+[[plugins]]
+repo = 'lambdalisue/vim-findent'
+
+[[plugins]]
+repo = 'tweekmonster/helpful.vim'
+on_cmd = 'HelpfulVersion'
+
+[[plugins]]
+repo = 'rhysd/vim-gfm-syntax'
+on_ft = 'markdown'
+
+[[plugins]]
+repo = 'machakann/vim-vimhelplint'
+on_ft = 'help'
+[plugins.ftplugin]
+help = '''
+  nnoremap <silent><buffer> ,r  <Cmd>VimhelpLint!<CR>
+'''
+
+[[plugins]]
+repo = 'zchee/deoplete-zsh'
+on_ft = ['zsh', 'sh']
+
+[[plugins]]
+repo = 'Shougo/deoplete.nvim'
+depends = 'context_filetype.vim'
+on_event = 'InsertEnter'
+hook_source = '''
+  source ~/.vim/rc/plugins/deoplete.rc.vim
+  call deoplete#enable()
+'''
+
+[[plugins]]
+repo = 'lambdalisue/suda.vim'
+on_event = 'BufRead'
+hook_add = '''
+  let g:suda_smart_edit = 1
+'''
+
+[[plugins]]
+repo = 'ncm2/float-preview.nvim'
+on_source = 'deoplete.nvim'
+if = 'has("nvim")'
+hook_source = '''
+  let g:float_preview#docked = 0
+  let g:float_preview#max_width = 60
+  let g:float_preview#max_height = 20
+'''
+
+[[plugins]]
+repo = 'nvim-treesitter/nvim-treesitter'
+if = 'has("nvim")'
+on_event = 'BufRead'
+hook_post_update = 'TSUpdate'
+hook_source = '''
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+    ensure_installed = 'all',
+    highlight = {
+        enable = true,
+        disable = {},
+    },
+    ensure_installed = 'all',
+}
+EOF
+
+" Custom colors
+highlight CandyBlue         gui=NONE guibg=#2c2c2c guifg=#1e95fd
+highlight CandyCranberry    gui=NONE guibg=#2c2c2c guifg=#4ae2e2
+highlight CandyEmerald      gui=NONE guibg=#2c2c2c guifg=#44ff44
+highlight CandyGreen        gui=NONE guibg=#2c2c2c guifg=#66ff66
+highlight CandyLime         gui=NONE guibg=#2c2c2c guifg=#4ae2e2
+highlight CandyOrange       gui=NONE guibg=#2c2c2c guifg=#ffb30a
+highlight CandyRed          gui=NONE guibg=#2c2c2c guifg=#ff6666
+highlight CandySky          gui=NONE guibg=#2c2c2c guifg=#6699ff
+highlight CandyViolet       gui=NONE guibg=#2c2c2c guifg=#ff13ff
+highlight CandyWhite        gui=NONE guibg=#2c2c2c guifg=#cccccc
+highlight CandyYellow       gui=NONE guibg=#2c2c2c guifg=#ffd30a
+highlight CandyCoral        gui=NONE guibg=#2c2c2c guifg=#f820ff
+highlight CandyTurquoise    gui=NONE guibg=#2c2c2c guifg=#1bc8c8
+highlight CandyCrimson      gui=NONE guibg=#2c2c2c guifg=#ff4444
+
+" neovim treesitter colors
+highlight! link TSAnnotation      CandyViolet
+highlight! link TSAttribute       CandySky
+highlight! link TSBoolean         Boolean
+highlight! link TSCharacter       Character
+highlight! link TSConditional     CandyCoral
+highlight! link TSConstBuiltin    CandyGreen
+highlight! link TSConstMacro      CandyViolet
+highlight! link TSConstant        Constant
+highlight! link TSConstructor     CandyEmerald
+highlight! link TSError           Error
+highlight! link TSException       Exception
+highlight! link TSField           CandyBlue
+highlight! link TSFloat           Float
+highlight! link TSFuncBuiltin     CandySky
+highlight! link TSFuncMacro       CandySky
+highlight! link TSFunction        CandyCranberry
+highlight! link TSInclude         CandyCranberry
+highlight! link TSKeyword         CandyEmerald
+highlight! link TSKeywordFunction Keyword
+highlight! link TSKeywordOperator CandyViolet
+highlight! link TSLabel           Label
+highlight! link TSLiteral         CandyYellow
+highlight! link TSMethod          CandyTurquoise
+highlight! link TSNamespace       CandyBlue
+highlight! link TSNone            Normal
+highlight! link TSNumber          Number
+highlight! link TSOperator        Operator
+highlight! link TSParameter       CandyWhite
+highlight! link TSParameterReference CandyWhite
+highlight! link TSProperty        Identifier
+highlight! link TSPunctBracket    CandyOrange
+highlight! link TSPunctDelimiter  CandyLime
+highlight! link TSPunctSpecial    Special
+highlight! link TSRepeat          Repeat
+highlight! link TSString          String
+highlight! link TSStringEscape    SpecialChar
+highlight! link TSStringRegex     String
+highlight! link TSTag             CandyBlue
+highlight! link TSTagDelimiter    CandyLime
+highlight! link TSText            TSNone
+highlight! link TSTitle           Title
+highlight! link TSType            Type
+highlight! link TSTypeBuiltin     Type
+highlight! link TSURL             Underlined
+highlight! link TSUnderline       Underlined
+highlight! link TSVariableBuiltin CandyLime
+'''
+
+[[plugins]]
+repo = 'hrsh7th/vim-eft'
+hook_source = '''
+let g:eft_ignorecase = v:true
+'''
+hook_add = '''
+nmap ;; <Plug>(eft-repeat)
+xmap ;; <Plug>(eft-repeat)
+
+nmap f <Plug>(eft-f)
+xmap f <Plug>(eft-f)
+omap f <Plug>(eft-f)
+nmap F <Plug>(eft-F)
+xmap F <Plug>(eft-F)
+omap F <Plug>(eft-F)
+'''
+on_map = {n = '<Plug>', x = '<Plug>', o = '<Plug>'}
+
+#[[plugins]]
+#repo = 'mattn/vim-maketable'
+#on_ft = 'markdown'
+
+[[plugins]]
+repo = 't9md/vim-choosewin'
+on_source = 'defx.nvim'
+
+[[plugins]]
+repo = 'vim-jp/vital.vim'
+on_command = 'Vitalize'
+
+[[plugins]]
+repo = 'joker1007/vim-markdown-quote-syntax'
+on_ft = 'markdown'
+
+[[plugins]]
+repo = 'gelguy/wilder.nvim'
+on_map = ':'
+if = 'has("nvim")'
+hook_source = '''
+call wilder#enable_cmdline_enter()
+set wildcharm=<Tab>
+
+cnoremap <expr> <Tab> wilder#in_context() ? wilder#next() : "\<Tab>"
+cnoremap <expr> <S-Tab> wilder#in_context() ? wilder#previous() : "\<S-Tab>"
+
+" only / and ? are enabled by default
+call wilder#set_option('modes', ['/', '?', ':'])
+
+" When the cmdline is empty, provide suggestions based on the cmdline history
+call wilder#set_option('pipeline', [
+      \   wilder#branch(
+      \     [
+      \       wilder#check({_, x -> empty(x)}),
+      \       wilder#history(),
+      \     ],
+      \     wilder#cmdline_pipeline(),
+      \     wilder#search_pipeline(),
+      \   ),
+      \ ])
+
+if has('nvim')
+  " popupmenu completion
+  call wilder#set_option('renderer', wilder#popupmenu_renderer({
+        \ 'highlighter': wilder#basic_highlighter(),
+        \ }))
+endif
+'''
