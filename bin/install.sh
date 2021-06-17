@@ -296,6 +296,15 @@ brew tap shopify/shopify
 require_brew themekit
 require_brew shopify-cli
 
+action "Install yabai and skhd"
+brew install koekeishiya/formulae/yabai
+brew install koekeishiya/formulae/skhd
+sudo yabai --install-sa
+ln -s "${HOME}/.dotfiles/yabai/yabairc" "${HOME}/.yabairc"
+ln -s "${HOME}/.dotfiles/yabai/skhdrc" "${HOME}/.skhdrc"
+brew services start skhd
+brew services start koekeishiya/formulae/yabai
+
 # ###########################################################
 info " Install Gui Applications"
 # ###########################################################
