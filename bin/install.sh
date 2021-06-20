@@ -280,6 +280,8 @@ pip3 install pynvim
 npm i -g neovim
 pip3 install neovim-remote
 success
+info "Vim Staff"
+ln -s $HOME/.dotfiles/config/vim ~/.vim
 
 info "Composer Install"
 php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
