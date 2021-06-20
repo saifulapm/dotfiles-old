@@ -70,6 +70,13 @@ shift + lctrl + alt - r : \
         "display notification \"Restarting Yabai\" with title \"Yabai\""; \
     launchctl kickstart -k "gui/${UID}/homebrew.mxcl.yabai"
 
+# Create New Space
+shift + ctrl + alt - n : yabai -m space --create && \
+                index="$(yabai -m query --spaces --display | jq 'map(select(."native-fullscreen" == 0))[-1].index')" && \
+                yabai -m space --focus "${index}"
+shift + ctrl + alt - c : yabai -m space --destroy
+
+
 # Make window native fullscreen
 alt - f         : yabai -m window --toggle zoom-fullscreen
 shift + alt - f : yabai -m window --toggle native-fullscreen

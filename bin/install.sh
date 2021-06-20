@@ -232,6 +232,7 @@ require_brew mariadb
 require_brew httpd
 require_brew tree
 require_brew fzf
+require_brew jq
 /usr/local/opt/fzf/install
 brew install jesseduffield/lazygit/lazygit
 require_brew lsd
@@ -306,6 +307,9 @@ ln -s "${HOME}/.dotfiles/yabai/yabairc" "${HOME}/.yabairc"
 ln -s "${HOME}/.dotfiles/yabai/skhdrc" "${HOME}/.skhdrc"
 brew services start skhd
 brew services start koekeishiya/formulae/yabai
+sudo mv ${HOME}/.dotfiles/yabai/yabai /private/etc/sudoers.d/
+sudo yabai --load-sa
+yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
 
 # ###########################################################
 info " Install Gui Applications"
