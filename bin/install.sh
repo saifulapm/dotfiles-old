@@ -299,7 +299,7 @@ brew tap shopify/shopify
 require_brew themekit
 require_brew shopify-cli
 
-action "Install yabai and skhd"
+warn "Install yabai and skhd"
 brew install koekeishiya/formulae/yabai
 brew install koekeishiya/formulae/skhd
 sudo yabai --install-sa
@@ -310,6 +310,11 @@ brew services start koekeishiya/formulae/yabai
 sudo mv ${HOME}/.dotfiles/yabai/yabai /private/etc/sudoers.d/
 sudo yabai --load-sa
 yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
+
+warn "Installing Simple Bar"
+require_cask ubersicht
+git clone https://github.com/Jean-Tinland/simple-bar $HOME/Library/Application\ Support/Übersicht/widgets/simple-bar
+ln -s "${HOME}/.dotfiles/.simplebarrc" "${HOME}/.simplebarrc"
 
 # ###########################################################
 info " Install Gui Applications"
