@@ -2,11 +2,11 @@
 alt - return : "${HOME}"/.dotfiles/yabai/scripts/open_kitty.sh
 
 # Show system statistics
-fn + lalt - 1 : "${HOME}"/.dotfiles/yabai/scripts/show_cpu.sh
-fn + lalt - 2 : "${HOME}"/.dotfiles/yabai/scripts/show_mem.sh
-fn + lalt - 3 : "${HOME}"/.dotfiles/yabai/scripts/show_bat.sh
-fn + lalt - 4 : "${HOME}"/.dotfiles/yabai/scripts/show_disk.sh
-fn + lalt - 5 : "${HOME}"/.dotfiles/yabai/scripts/show_song.sh
+ctrl + lalt - 1 : "${HOME}"/.dotfiles/yabai/scripts/show_cpu.sh
+ctrl + lalt - 2 : "${HOME}"/.dotfiles/yabai/scripts/show_mem.sh
+ctrl + lalt - 3 : "${HOME}"/.dotfiles/yabai/scripts/show_bat.sh
+ctrl + lalt - 4 : "${HOME}"/.dotfiles/yabai/scripts/show_disk.sh
+ctrl + lalt - 5 : "${HOME}"/.dotfiles/yabai/scripts/show_song.sh
 
 # Navigation
 alt - h : yabai -m window --focus west
