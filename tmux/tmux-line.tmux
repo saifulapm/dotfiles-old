@@ -1,10 +1,10 @@
-OneDark='#282a36'
+OneDark='#282c34'
 NightOwl='#0F1D2A'
 Material='#263238'
 
 BACKGROUND_COLOR=$OneDark
 INACTIVE_FG_COLOR='#5c6370'
-ACTIVE_FG_COLOR='#fac863'
+ACTIVE_FG_COLOR='#98be65'
 
 set-option -g status-style "bg=$BACKGROUND_COLOR"
 
