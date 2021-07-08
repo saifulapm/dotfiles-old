@@ -11,6 +11,9 @@ export PATH="/usr/local/sbin:$PATH"
 # Flutter
 export PATH="$HOME/sdk/flutter/bin:$PATH"
 
+# Composer
+export PATH="$HOME/.composer/vendor/bin:$PATH"
+
 # Java
 # sudo ln -sfn /usr/local/opt/openjdk/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk.jdk
 export PATH="/usr/local/opt/openjdk/bin:$PATH"

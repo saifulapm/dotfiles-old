@@ -228,8 +228,8 @@ require_brew fd
 require_brew lolcat
 require_brew php
 require_brew openssl
-require_brew mariadb
-require_brew httpd
+# require_brew mariadb
+# require_brew httpd
 require_brew tree
 require_brew fzf
 require_brew jq
@@ -315,6 +315,13 @@ warn "Installing Simple Bar"
 require_cask ubersicht
 git clone https://github.com/Jean-Tinland/simple-bar $HOME/Library/Application\ Support/Übersicht/widgets/simple-bar
 ln -s "${HOME}/.dotfiles/.simplebarrc" "${HOME}/.simplebarrc"
+
+warn "Installing Velvet & DBngin"
+require_cask dbngin
+composer global require laravel/valet
+valet install
+mkdir ~/Sites
+
 
 # ###########################################################
 info " Install Gui Applications"
