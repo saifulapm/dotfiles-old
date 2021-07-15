@@ -228,7 +228,7 @@ require_brew fd
 require_brew lolcat
 require_brew php
 require_brew openssl
-# require_brew mariadb
+require_brew mariadb
 # require_brew httpd
 require_brew tree
 require_brew fzf
@@ -317,11 +317,19 @@ git clone https://github.com/Jean-Tinland/simple-bar $HOME/Library/Application\ 
 ln -s "${HOME}/.dotfiles/.simplebarrc" "${HOME}/.simplebarrc"
 
 warn "Installing Velvet & DBngin"
-require_cask dbngin
+# require_cask dbngin
+sudo apachectl stop
+sudo launchctl unload -w /System/Library/LaunchDaemons/org.apache.httpd.plist 2>/dev/null
 composer global require laravel/valet
 valet install
 mkdir ~/Sites
+cd ~/Sites
+valet park
+cd ..
 
+warn "PHP IMAP"
+brew tap kabel/php-ext
+require_brew php-imap
 
 # ###########################################################
 info " Install Gui Applications"
