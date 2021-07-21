@@ -271,8 +271,8 @@ require_cask macvim
 info "Install neovim"
 npm i -g bash-language-server
 npm i -g intelephense
-require_brew  luajit --HEAD
-require_brew neovim --HEAD
+require_brew  luajit
+require_brew neovim
 info "Configruation nvim"
 git clone https://github.com/saifulapm/nvim ~/.config/nvim
 success
