@@ -270,6 +270,19 @@ success
 info "Install Macvim"
 require_cask macvim
 
+require_brew golang
+mkdir -p ~/.go
+# for chinese user use proxy to get golang package which on google server
+export GO111MODULE="on"
+export GOPATH="$HOME/.go"
+if [[ $UserLocation =~ 1 ]];then
+  export GOPROXY=https://goproxy.io
+fi
+go get golang.org/x/tools/gopls@latest
+go get -u github.com/go-delve/delve/cmd/dlv
+
+require_brew rust
+
 info "Install neovim"
 npm i -g bash-language-server
 npm i -g intelephense
