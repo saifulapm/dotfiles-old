@@ -30,3 +30,4 @@ export BAT_THEME="TwoDark"
 export FZF_COMPLETION_TRIGGER='**'
 export FZF_DEFAULT_COMMAND='rg --files --hidden'
 export FZF_DEFAULT_OPTS='--height 90% --layout reverse --border --color "border:#b877db" --preview="bat --color=always {}"'
+. "$HOME/.cargo/env"

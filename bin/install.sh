@@ -236,6 +236,8 @@ require_brew jq
 /usr/local/opt/fzf/install
 brew install jesseduffield/lazygit/lazygit
 require_brew lsd
+require_brew hub
+require_brew z
 
 warn "link tmux conf"
 ln -s  $HOME/.dotfiles/tmux/.tmux.conf $HOME/.tmux.conf
@@ -271,6 +273,7 @@ require_cask macvim
 info "Install neovim"
 npm i -g bash-language-server
 npm i -g intelephense
+npm i -g vscode-langservers-extracted
 require_brew  luajit
 require_brew neovim
 info "Configruation nvim"
@@ -298,23 +301,6 @@ warn "Install Shopify Staff"
 brew tap shopify/shopify
 require_brew themekit
 require_brew shopify-cli
-
-warn "Install yabai and skhd"
-brew install koekeishiya/formulae/yabai
-brew install koekeishiya/formulae/skhd
-sudo yabai --install-sa
-ln -s "${HOME}/.dotfiles/yabai/yabairc" "${HOME}/.yabairc"
-ln -s "${HOME}/.dotfiles/yabai/skhdrc" "${HOME}/.skhdrc"
-brew services start skhd
-brew services start koekeishiya/formulae/yabai
-sudo mv ${HOME}/.dotfiles/yabai/yabai /private/etc/sudoers.d/
-sudo yabai --load-sa
-yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
-
-warn "Installing Simple Bar"
-require_cask ubersicht
-git clone https://github.com/Jean-Tinland/simple-bar $HOME/Library/Application\ Support/Übersicht/widgets/simple-bar
-ln -s "${HOME}/.dotfiles/.simplebarrc" "${HOME}/.simplebarrc"
 
 warn "Installing Velvet & DBngin"
 # require_cask dbngin
@@ -465,6 +451,27 @@ fi
 read -r -p "Do you want install rectangle? [y|N] " wxresponse
 if [[ $wxresponse =~ (y|yes|Y) ]];then
   require_cask rectangle
+else
+  success "skipped"
+fi
+
+read -r -p "Do you want install Yabai? [y|N] " response
+if [[ $response =~ (y|yes|Y) ]];then
+  warn "Install yabai and skhd"
+  brew install koekeishiya/formulae/yabai
+  brew install koekeishiya/formulae/skhd
+  sudo yabai --install-sa
+  ln -s "${HOME}/.dotfiles/yabai/yabairc" "${HOME}/.yabairc"
+  ln -s "${HOME}/.dotfiles/yabai/skhdrc" "${HOME}/.skhdrc"
+  brew services start skhd
+  brew services start koekeishiya/formulae/yabai
+  sudo mv ${HOME}/.dotfiles/yabai/yabai /private/etc/sudoers.d/
+  sudo yabai --load-sa
+  yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
+  warn "Installing Simple Bar"
+  require_cask ubersicht
+  git clone https://github.com/Jean-Tinland/simple-bar $HOME/Library/Application\ Support/Übersicht/widgets/simple-bar
+  # ln -s "${HOME}/.dotfiles/.simplebarrc" "${HOME}/.simplebarrc"
 else
   success "skipped"
 fi
