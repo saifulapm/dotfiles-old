@@ -275,9 +275,6 @@ mkdir -p ~/.go
 # for chinese user use proxy to get golang package which on google server
 export GO111MODULE="on"
 export GOPATH="$HOME/.go"
-if [[ $UserLocation =~ 1 ]];then
-  export GOPROXY=https://goproxy.io
-fi
 go get golang.org/x/tools/gopls@latest
 go get -u github.com/go-delve/delve/cmd/dlv
 
@@ -320,11 +317,11 @@ warn "Installing Velvet & DBngin"
 sudo apachectl stop
 sudo launchctl unload -w /System/Library/LaunchDaemons/org.apache.httpd.plist 2>/dev/null
 composer global require laravel/valet
-valet install
+# valet install
 mkdir ~/Sites
-cd ~/Sites
-valet park
-cd ..
+# cd ~/Sites
+# valet park
+# cd ..
 
 warn "PHP IMAP"
 brew tap kabel/php-ext
