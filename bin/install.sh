@@ -164,7 +164,9 @@ info "update ruby"
 ###########################################################
 
 RUBY_CONFIGURE_OPTS="--with-openssl-dir=`brew --prefix openssl` --with-readline-dir=`brew --prefix readline` --with-libyaml-dir=`brew --prefix libyaml`"
-require_brew ruby
+# require_brew ruby
+require_brew rbenv
+require_brew ruby-build
 
 # ###########################################################
 info "zsh setup"
@@ -293,6 +295,7 @@ info "Install neovim Staff"
 pip3 install pynvim
 npm i -g neovim
 pip3 install neovim-remote
+cargo install stylua
 success
 info "Vim Staff"
 ln -s $HOME/.dotfiles/config/vim ~/.vim

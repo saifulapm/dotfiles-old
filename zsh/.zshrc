@@ -120,3 +120,4 @@ fif() {
 }
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi

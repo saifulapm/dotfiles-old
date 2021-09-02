@@ -1,9 +1,19 @@
 # Enviroment variables
+export DOTFILES="$HOME/.dotfiles"
+export PROJECTS_DIR="$HOME/Sites"
+export PERSONAL_PROJECTS_DIR="$PROJECTS_DIR/Vim"
 
 # You may need to manually set your language environment
 export LANG=en_US.UTF-8
 # gpg --full-generate-key
 export PASSWORD_STORE_DIR="$HOME/Library/Mobile Documents/com~apple~CloudDocs/Passwords"
+
+# Add LUA_PATH to the environment ensuring the lua version is set since
+# luarocks from homebrew uses lua 5.4 by default so would otherwise add the
+# wrong path
+if which luarocks >/dev/null; then
+  eval "$(luarocks --lua-version=5.1 path)"
+fi
 
 #Homebrew's sbin
 export PATH="/usr/local/sbin:$PATH"
