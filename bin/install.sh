@@ -269,8 +269,8 @@ npm install -g create-react-app
 npm install -g typescript typescript-language-server
 success
 
-info "Install Macvim"
-require_cask macvim
+info "Install vim"
+require_cask vim
 
 require_brew golang
 mkdir -p ~/.go
@@ -283,10 +283,8 @@ go get -u github.com/go-delve/delve/cmd/dlv
 require_brew rust
 
 info "Install neovim"
-npm i -g bash-language-server
-npm i -g intelephense
-npm i -g vscode-langservers-extracted
-require_brew  luajit
+require_brew luajit
+require_brew himalaya
 require_brew neovim
 info "Configruation nvim"
 git clone https://github.com/saifulapm/nvim ~/.config/nvim
