@@ -269,8 +269,8 @@ npm install -g create-react-app
 npm install -g typescript typescript-language-server
 success
 
-info "Install Macvim"
-require_cask macvim
+info "Install Vim"
+require_brew vim
 
 require_brew golang
 mkdir -p ~/.go
@@ -283,13 +283,13 @@ go get -u github.com/go-delve/delve/cmd/dlv
 require_brew rust
 
 info "Install neovim"
-npm i -g bash-language-server
-npm i -g intelephense
-npm i -g vscode-langservers-extracted
-require_brew  luajit
+# npm i -g bash-language-server
+# npm i -g intelephense
+# npm i -g vscode-langservers-extracted
+require_brew luajit
 require_brew neovim
 info "Configruation nvim"
-git clone https://github.com/saifulapm/nvim ~/.config/nvim
+# git clone https://github.com/saifulapm/nvim ~/.config/nvim
 success
 info "Install neovim Staff"
 pip3 install pynvim
@@ -306,9 +306,9 @@ php -r "if (hash_file('sha384', 'composer-setup.php') === '756890a4488ce9024fc62
 php composer-setup.php
 php -r "unlink('composer-setup.php');"
 mv composer.phar /usr/local/bin/composer
-composer global require php-stubs/wordpress-globals
-composer global require php-stubs/wordpress-stubs
-composer global require php-stubs/woocommerce-stubs
+# composer global require php-stubs/wordpress-globals
+# composer global require php-stubs/wordpress-stubs
+# composer global require php-stubs/woocommerce-stubs
 
 warn "Install Shopify Staff"
 brew tap shopify/shopify
