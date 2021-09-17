@@ -270,7 +270,7 @@ npm install -g typescript typescript-language-server
 success
 
 info "Install vim"
-require_cask vim
+require_brew vim
 
 require_brew golang
 mkdir -p ~/.go
