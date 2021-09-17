@@ -269,13 +269,8 @@ npm install -g create-react-app
 npm install -g typescript typescript-language-server
 success
 
-<<<<<<< HEAD
-info "Install Vim"
-require_brew vim
-=======
 info "Install vim"
 require_cask vim
->>>>>>> 58fdd381a8e8470e3a63ee99046993d2a943ca53
 
 require_brew golang
 mkdir -p ~/.go
