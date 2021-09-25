@@ -28,6 +28,9 @@ export PATH="$HOME/.composer/vendor/bin:$PATH"
 # sudo ln -sfn /usr/local/opt/openjdk/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk.jdk
 export PATH="/usr/local/opt/openjdk/bin:$PATH"
 
+# Rust
+export PATH="$HOME/.cargo/bin:$PATH"
+
 # Editor
 export EDITOR="nvim"
 export GIT_EDITOR="nvim"
