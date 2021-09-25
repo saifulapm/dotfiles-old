@@ -264,21 +264,21 @@ require_brew yarn
 require_brew lua
 require_brew ninja
 
-warn "Install NPM Staff"
-npm install -g create-react-app
-npm install -g typescript typescript-language-server
-success
+# warn "Install NPM Staff"
+# npm install -g create-react-app
+# npm install -g typescript typescript-language-server
+# success
 
 info "Install vim"
 require_brew vim
 
-require_brew golang
-mkdir -p ~/.go
-# for chinese user use proxy to get golang package which on google server
-export GO111MODULE="on"
-export GOPATH="$HOME/.go"
-go get golang.org/x/tools/gopls@latest
-go get -u github.com/go-delve/delve/cmd/dlv
+# require_brew golang
+# mkdir -p ~/.go
+# # for chinese user use proxy to get golang package which on google server
+# export GO111MODULE="on"
+# export GOPATH="$HOME/.go"
+# go get golang.org/x/tools/gopls@latest
+# go get -u github.com/go-delve/delve/cmd/dlv
 
 require_brew rust
 
