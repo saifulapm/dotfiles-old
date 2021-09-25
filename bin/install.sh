@@ -294,6 +294,7 @@ pip3 install pynvim
 npm i -g neovim
 pip3 install neovim-remote
 cargo install stylua
+require_brew php-cs-fixer
 success
 info "Vim Staff"
 ln -s $HOME/.dotfiles/config/vim ~/.vim
