@@ -287,6 +287,10 @@ require_brew luajit
 require_brew himalaya
 require_brew neovim
 info "Configruation nvim"
+# NeoOrg Setup
+require_brew gcc
+$ TODO: Do this manuallay
+# ln -s /usr/local/Cellar/gcc/11.2.0/bin/gcc-11 /usr/local/bin/cc
 # git clone https://github.com/saifulapm/nvim ~/.config/nvim
 success
 info "Install neovim Staff"
