@@ -272,13 +272,14 @@ require_brew ninja
 info "Install vim"
 require_brew vim
 
-# require_brew golang
-# mkdir -p ~/.go
-# # for chinese user use proxy to get golang package which on google server
-# export GO111MODULE="on"
-# export GOPATH="$HOME/.go"
+require_brew golang
+mkdir -p ~/.go
+# for chinese user use proxy to get golang package which on google server
+export GO111MODULE="on"
+export GOPATH="$HOME/.go"
 # go get golang.org/x/tools/gopls@latest
 # go get -u github.com/go-delve/delve/cmd/dlv
+go install mvdan.cc/sh/v3/cmd/shfmt@latest
 
 require_brew rust
 
@@ -288,7 +289,7 @@ require_brew himalaya
 require_brew neovim
 info "Configruation nvim"
 # NeoOrg Setup
-require_brew gcc
+# require_brew gcc
 $ TODO: Do this manuallay
 # ln -s /usr/local/Cellar/gcc/11.2.0/bin/gcc-11 /usr/local/bin/cc
 # git clone https://github.com/saifulapm/nvim ~/.config/nvim
@@ -296,6 +297,12 @@ success
 info "Install neovim Staff"
 pip3 install pynvim
 npm i -g neovim
+npm install -g intelephense
+npm i -g write-good
+require_brew shellcheck
+npm i -g prettier
+npm install -g markdownlint-cli
+npm i -g markdownlint
 pip3 install neovim-remote
 cargo install stylua
 require_brew php-cs-fixer
@@ -317,6 +324,7 @@ warn "Install Shopify Staff"
 brew tap shopify/shopify
 require_brew themekit
 require_brew shopify-cli
+require_brew theme-check
 
 warn "Installing Velvet & DBngin"
 # require_cask dbngin
