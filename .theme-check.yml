@@ -1,0 +1,10 @@
+root: .
+
+ImgWidthAndHeight:
+  enabled: false
+
+ImgLazyLoading:
+  enabled: false
+
+DeprecateLazysizes:
+  enabled: false
