@@ -219,6 +219,7 @@ info " Install Develop Tools"
 # ###########################################################
 require_brew curl
 require_brew wget
+require_brew gh
 require_brew ripgrep
 require_brew bat
 require_brew findutils
