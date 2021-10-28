@@ -146,15 +146,15 @@ if [[ $? = 0 ]]; then
   if [[ ${PIPESTATUS[0]} != 0 ]]; then
     echo
     info "looks like you are using MacOS sed rather than gnu-sed, accommodating"
-    sed -i '' "s/GITHUBFULLNAME/$firstname $lastname/" "$HOME/.gitconfig"
-    sed -i '' "s/GITHUBEMAIL/$email/"  "$HOME/.gitconfig"
-    sed -i '' "s/GITHUBUSER/$githubuser/" "$HOME/.gitconfig"
+    sed -i '' "s/GITHUBFULLNAME/$firstname $lastname/"  $HOME/.gitconfig
+    sed -i '' 's/GITHUBEMAIL/'$email'/'  $HOME/.gitconfig
+    sed -i '' 's/GITHUBUSER/'$githubuser'/'  $HOME/.gitconfig
     success
   else
     echo
     info "looks like you are already using gnu-sed. woot!"
-    sed -i "s/GITHUBEMAIL/$email/"  "$HOME/.gitconfig"
-    sed -i "s/GITHUBUSER/$githubuser/"  "$HOME/.gitconfig"
+    sed -i 's/GITHUBEMAIL/'$email'/'  $HOME/.gitconfig
+    sed -i 's/GITHUBUSER/'$githubuser'/'  $HOME/.gitconfig
   fi
 fi
 
@@ -163,6 +163,7 @@ fi
 info "update ruby"
 ###########################################################
 
+RUBY_CONFIGURE_OPTS="--with-openssl-dir=`brew --prefix openssl` --with-readline-dir=`brew --prefix readline` --with-libyaml-dir=`brew --prefix libyaml`"
 # require_brew ruby
 require_brew rbenv
 require_brew ruby-build
@@ -176,15 +177,15 @@ require_brew zsh
 # symslink zsh config
 ZSHRC="$HOME/.zshrc"
 info "Configuring zsh"
-if [ ! -f "$ZSHRC" ]; then
+if [ ! -f "ZSHRC" ]; then
   read -r -p "Seems like your zshrc file exist,do you want delete it? [y|N] " response
   if [[ $response =~ (y|yes|Y) ]]; then
-    rm -rf "$HOME/.zshrc"
-    rm -rf "$HOME/.zshenv"
+    rm -rf $HOME/.zshrc
+    rm -rf $HOME/.zshenv
     warn "link zsh/.zshrc and zsh/.zshenv"
-    ln -s  "$HOME/.dotfiles/zsh/.zshenv" "$HOME/.zshenv"
-    ln -s  "$HOME/.dotfiles/zsh/.zshrc" "$HOME/.zshrc"
-    ln -s  "$HOME/.dotfiles/zsh/.p10k-evilball.zsh" "$HOME/.p10k-evilball.zsh"
+    ln -s  $HOME/.dotfiles/zsh/.zshenv $HOME/.zshenv
+    ln -s  $HOME/.dotfiles/zsh/.zshrc $HOME/.zshrc
+    ln -s  $HOME/.dotfiles/zsh/.p10k-evilball.zsh $HOME/.p10k-evilball.zsh
     if [[ ! -f $HOME/.zinit/bin/zinit.zsh ]]; then
       print -P "%F{33}▓▒░ %F{220}Installing DHARMA Initiative Plugin Manager (zdharma/zinit)…%f"
       command mkdir -p "$HOME/.zinit" && command chmod g-rwX "$HOME/.zinit"
@@ -241,15 +242,15 @@ require_brew hub
 require_brew z
 
 warn "link tmux conf"
-ln -s  "$HOME/.dotfiles/tmux/.tmux.conf" "$HOME/.tmux.conf"
+ln -s  $HOME/.dotfiles/tmux/.tmux.conf $HOME/.tmux.conf
 success
 
 warn "link .rgignore"
-ln -s  "$HOME/.dotfiles/.rgignore" "$HOME/.rgignore"
+ln -s  $HOME/.dotfiles/.rgignore $HOME/.rgignore
 success
 
 warn "link .env"
-ln -s  "$HOME/.dotfiles/env/.env" "$HOME/.env"
+ln -s  $HOME/.dotfiles/env/.env $HOME/.env
 success
 
 
@@ -307,7 +308,7 @@ cargo install stylua
 require_brew php-cs-fixer
 success
 info "Vim Staff"
-ln -s "$HOME/.dotfiles/config/vim" ~/.vim
+ln -s $HOME/.dotfiles/config/vim ~/.vim
 
 info "Composer Install"
 php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
@@ -351,7 +352,7 @@ else
   success "skipped"
 fi
 info "Configuration kitty settings"
-ln -s "$HOME/.dotfiles/config/kitty"  "$HOME/.config/kitty"
+ln -s $HOME/.dotfiles/config/kitty  $HOME/.config/kitty
 success
 info "reading iterm settings"
 defaults read -app iTerm > /dev/null 2>&1;
@@ -363,7 +364,7 @@ if [[ $response =~ (y|yes|Y) ]];then
 
   info "setup Terminal Info"
   git clone https://github.com/alacritty/alacritty.git
-  cd alacritty || exit
+  cd alacritty
   sudo tic -xe alacritty,alacritty-direct extra/alacritty.Info
   cd .. && rm -rf alacritty
 else
@@ -371,7 +372,7 @@ else
 fi
 
 info "Configuration alacritty settings"
-ln -s "$HOME/.dotfiles/config/alacritty"  "$HOME/.config/alacritty"
+ln -s $HOME/.dotfiles/config/alacritty  $HOME/.config/alacritty
 success
 
 read -r -p "Do you want install google-chrome? [y|N] " response
@@ -429,7 +430,7 @@ if [[ $response =~ (y|yes|Y) ]];then
   brew tap amar1729/formulae
   require_cask browserpass
   PREFIX='/usr/local/opt/browserpass' make hosts-chrome-user -f '/usr/local/opt/browserpass/lib/browserpass/Makefile'
-  ln -s "$HOME/Library/Mobile\ Documents/com~apple~CloudDocs/Passwords $HOME/.password-store"
+  ln -s $HOME/Library/Mobile\ Documents/com~apple~CloudDocs/Passwords $HOME/.password-store
 else
   success "skipped"
 fi
@@ -488,12 +489,12 @@ if [[ $response =~ (y|yes|Y) ]];then
   ln -s "${HOME}/.dotfiles/yabai/skhdrc" "${HOME}/.skhdrc"
   brew services start skhd
   brew services start koekeishiya/formulae/yabai
-  sudo mv "${HOME}/.dotfiles/yabai/yabai /private/etc/sudoers.d/"
+  sudo mv ${HOME}/.dotfiles/yabai/yabai /private/etc/sudoers.d/
   sudo yabai --load-sa
   yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
   warn "Installing Simple Bar"
   require_cask ubersicht
-  git clone https://github.com/Jean-Tinland/simple-bar "$HOME/Library/Application\ Support/Übersicht/widgets/simple-bar"
+  git clone https://github.com/Jean-Tinland/simple-bar $HOME/Library/Application\ Support/Übersicht/widgets/simple-bar
   # ln -s "${HOME}/.dotfiles/.simplebarrc" "${HOME}/.simplebarrc"
 else
   success "skipped"
