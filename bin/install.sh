@@ -83,7 +83,7 @@ if [ ! -f "gitfile" ]; then
     warn "cp /git/.gitconfig ~/.gitconfig"
     sudo cp $HOME/.dotfiles/git/.gitconfig  $HOME/.gitconfig
     ln -s $HOME/.dotfiles/git/.gitignore  $HOME/.gitignore
-    success
+    success "link .gitconfig"
   else
     success "skipped"
   fi
@@ -149,7 +149,7 @@ if [[ $? = 0 ]]; then
     sed -i '' "s/GITHUBFULLNAME/$firstname $lastname/"  $HOME/.gitconfig
     sed -i '' 's/GITHUBEMAIL/'$email'/'  $HOME/.gitconfig
     sed -i '' 's/GITHUBUSER/'$githubuser'/'  $HOME/.gitconfig
-    success
+    success ".gticonfig updated"
   else
     echo
     info "looks like you are already using gnu-sed. woot!"
@@ -157,16 +157,6 @@ if [[ $? = 0 ]]; then
     sed -i 's/GITHUBUSER/'$githubuser'/'  $HOME/.gitconfig
   fi
 fi
-
-
-###########################################################
-info "update ruby"
-###########################################################
-
-RUBY_CONFIGURE_OPTS="--with-openssl-dir=`brew --prefix openssl` --with-readline-dir=`brew --prefix readline` --with-libyaml-dir=`brew --prefix libyaml`"
-# require_brew ruby
-require_brew rbenv
-require_brew ruby-build
 
 # ###########################################################
 info "zsh setup"
@@ -193,11 +183,26 @@ if [ ! -f "ZSHRC" ]; then
         print -P "%F{33}▓▒░ %F{34}Installation successful.%f" || \
         print -P "%F{160}▓▒░ The clone has failed.%f"
     fi
+    source $HOME/.zshrc
     zinit install
   else
     success "skipped"
   fi
 fi
+
+###########################################################
+info "update ruby"
+###########################################################
+require_brew rbenv
+require_brew ruby-build
+source $HOME/.zshrc
+rbenv install 3.0.2
+rbenv global 3.0.2
+gem install rails -v 6.1.4.1
+rbenv rehash
+sudo installer -pkg
+/Library/Developer/CommandLineTools/Packages/macOS_SDK_headers_for_macOS_10.14.pkg -target /
+success "ruby and rails installed"
 
 # ###########################################################
 info "Install fonts"
@@ -209,9 +214,8 @@ if [[ $response =~ (y|yes|Y) ]];then
   require_brew fontconfig
   sh ./fonts/install.sh
   brew tap homebrew/cask-fonts
-  require_cask font-aurulent-sans-mono-nerd-font
   require_cask font-hack-nerd-font
-  success
+  success "Fonts installed"
 fi
 
 # ###########################################################
@@ -228,7 +232,7 @@ brew install --HEAD universal-ctags/universal-ctags/universal-ctags
 require_brew tmux
 require_brew grip
 require_brew fd
-require_brew lolcat
+# require_brew lolcat
 require_brew php
 require_brew openssl
 require_brew mariadb
@@ -244,15 +248,15 @@ require_brew z
 
 warn "link tmux conf"
 ln -s  $HOME/.dotfiles/tmux/.tmux.conf $HOME/.tmux.conf
-success
+success "tmux conf linked"
 
 warn "link .rgignore"
 ln -s  $HOME/.dotfiles/.rgignore $HOME/.rgignore
-success
+success "rgignore linked"
 
 warn "link .env"
 ln -s  $HOME/.dotfiles/env/.env $HOME/.env
-success
+success "env linked"
 
 
 warn "Install tpm"
@@ -273,53 +277,37 @@ require_brew ninja
 info "Install vim"
 require_brew vim
 
-require_brew golang
-mkdir -p ~/.go
-# for chinese user use proxy to get golang package which on google server
-export GO111MODULE="on"
-export GOPATH="$HOME/.go"
-# go get golang.org/x/tools/gopls@latest
-# go get -u github.com/go-delve/delve/cmd/dlv
-go install mvdan.cc/sh/v3/cmd/shfmt@latest
-
 require_brew rust
 
 info "Install neovim"
 require_brew luajit
-require_brew himalaya
 require_brew neovim
-info "Configruation nvim"
-# NeoOrg Setup
-# require_brew gcc
-$ TODO: Do this manuallay
-# ln -s /usr/local/Cellar/gcc/11.2.0/bin/gcc-11 /usr/local/bin/cc
+# info "Configruation nvim"
 # git clone https://github.com/saifulapm/nvim ~/.config/nvim
-success
+# success
 info "Install neovim Staff"
 pip3 install pynvim
 npm i -g neovim
 npm install -g intelephense
-npm i -g write-good
-require_brew shellcheck
+# npm i -g write-good
+# require_brew shellcheck
 npm i -g prettier
-npm install -g markdownlint-cli
-npm i -g markdownlint
+# npm install -g markdownlint-cli
+# npm i -g markdownlint
 pip3 install neovim-remote
 cargo install stylua
 require_brew php-cs-fixer
-success
-info "Vim Staff"
-ln -s $HOME/.dotfiles/config/vim ~/.vim
+success "nvim installed"
+# info "Vim Staff"
+# ln -s $HOME/.dotfiles/config/vim ~/.vim
 
 info "Composer Install"
 php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-php -r "if (hash_file('sha384', 'composer-setup.php') === '756890a4488ce9024fc62c56153228907f1545c228516cbf63f885e036d37e9a59d27d63f46af1d4d07ee0f76181c7d3') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+php -r "if (hash_file('sha384', 'composer-setup.php') === '906a84df04cea2aa72f40b5f787e49f22d4c2f19492ac310e8cba5b96ac8b64115ac402c8cd292b8a03482574915d1a8') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
 php composer-setup.php
 php -r "unlink('composer-setup.php');"
 mv composer.phar /usr/local/bin/composer
-# composer global require php-stubs/wordpress-globals
-# composer global require php-stubs/wordpress-stubs
-# composer global require php-stubs/woocommerce-stubs
+success "composer installed"
 
 warn "Install Shopify Staff"
 brew tap shopify/shopify
@@ -354,10 +342,7 @@ else
 fi
 info "Configuration kitty settings"
 ln -s $HOME/.dotfiles/config/kitty  $HOME/.config/kitty
-success
-info "reading iterm settings"
-defaults read -app iTerm > /dev/null 2>&1;
-success
+success "kitty settings configured"
 
 read -r -p "Do you want install alacritty? [y|N] " response
 if [[ $response =~ (y|yes|Y) ]];then
@@ -374,7 +359,7 @@ fi
 
 info "Configuration alacritty settings"
 ln -s $HOME/.dotfiles/config/alacritty  $HOME/.config/alacritty
-success
+success "alacritty settings configured"
 
 read -r -p "Do you want install google-chrome? [y|N] " response
 if [[ $response =~ (y|yes|Y) ]];then
@@ -425,17 +410,6 @@ else
   success "skipped"
 fi
 
-read -r -p "Do you want install PasswordManager (Pass? [y|N] " response
-if [[ $response =~ (y|yes|Y) ]];then
-  require_brew pass
-  brew tap amar1729/formulae
-  require_cask browserpass
-  PREFIX='/usr/local/opt/browserpass' make hosts-chrome-user -f '/usr/local/opt/browserpass/lib/browserpass/Makefile'
-  ln -s $HOME/Library/Mobile\ Documents/com~apple~CloudDocs/Passwords $HOME/.password-store
-else
-  success "skipped"
-fi
-
 read -r -p "Do you want install whatsapp? [y|N] " response
 if [[ $response =~ (y|yes|Y) ]];then
   require_cask whatsapp
@@ -447,13 +421,6 @@ fi
 read -r -p "Do you want install vlc? [y|N] " response
 if [[ $response =~ (y|yes|Y) ]];then
   require_cask vlc
-else
-  success "skipped"
-fi
-
-read -r -p "Do you want install IINA Video Player? [y|N] " response
-if [[ $response =~ (y|yes|Y) ]];then
-  require_cask iina
 else
   success "skipped"
 fi
