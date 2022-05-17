@@ -6,5 +6,5 @@ my personal dotfiles mac
 ```
 git clone https://github.com/saifulapm/dotfiles ~/.dotfiles
 cd .dotfiles
-./bin/install.sh
+./scripts/install.sh
 ```
