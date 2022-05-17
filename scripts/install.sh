@@ -170,39 +170,18 @@ info "Configuring zsh"
 if [ ! -f "ZSHRC" ]; then
   read -r -p "Seems like your zshrc file exist,do you want delete it? [y|N] " response
   if [[ $response =~ (y|yes|Y) ]]; then
+    rm -rf $HOME/.oh-my-zsh
+    warn "Installing Oh My Zsh"
+    sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
     rm -rf $HOME/.zshrc
     rm -rf $HOME/.zshenv
-    warn "link zsh/.zshrc and zsh/.zshenv"
-    ln -s  $HOME/.dotfiles/zsh/.zshenv $HOME/.zshenv
+    warn "link zsh/.zshrc and zsh/others"
     ln -s  $HOME/.dotfiles/zsh/.zshrc $HOME/.zshrc
-    ln -s  $HOME/.dotfiles/zsh/.p10k-evilball.zsh $HOME/.p10k-evilball.zsh
-    if [[ ! -f $HOME/.zinit/bin/zinit.zsh ]]; then
-      print -P "%F{33}▓▒░ %F{220}Installing DHARMA Initiative Plugin Manager (zdharma/zinit)…%f"
-      command mkdir -p "$HOME/.zinit" && command chmod g-rwX "$HOME/.zinit"
-      command git clone https://github.com/zdharma/zinit "$HOME/.zinit/bin" && \
-        print -P "%F{33}▓▒░ %F{34}Installation successful.%f" || \
-        print -P "%F{160}▓▒░ The clone has failed.%f"
-    fi
     source $HOME/.zshrc
-    zinit install
   else
     success "skipped"
   fi
 fi
-
-###########################################################
-info "update ruby"
-###########################################################
-require_brew rbenv
-require_brew ruby-build
-source $HOME/.zshrc
-rbenv install 3.0.2
-rbenv global 3.0.2
-gem install rails -v 6.1.4.1
-rbenv rehash
-sudo installer -pkg
-/Library/Developer/CommandLineTools/Packages/macOS_SDK_headers_for_macOS_10.14.pkg -target /
-success "ruby and rails installed"
 
 # ###########################################################
 info "Install fonts"
@@ -214,13 +193,15 @@ if [[ $response =~ (y|yes|Y) ]];then
   require_brew fontconfig
   sh ./fonts/install.sh
   brew tap homebrew/cask-fonts
-  require_cask font-hack-nerd-font
+  require_cask font-jetbrains-mono
+  require_cask font-jetbrains-mono-nerd-font
   success "Fonts installed"
 fi
 
 # ###########################################################
 info " Install Develop Tools"
 # ###########################################################
+require_brew coreutils
 require_brew curl
 require_brew wget
 require_brew gh
@@ -228,23 +209,44 @@ require_brew ripgrep
 require_brew bat
 require_brew findutils
 require_brew make
-brew install --HEAD universal-ctags/universal-ctags/universal-ctags
 require_brew tmux
-require_brew grip
+require_brew ffmpeg
+require_brew httpie
+require_brew mackup
+require_brew mas
 require_brew fd
-# require_brew lolcat
+# Spatie Medialibrary
+require_brew jpegoptim
+require_brew optipng
+require_brew pngquant
+require_brew svgo
+require_brew gifsicle
+require_brew lua
+require_brew ninja
+require_brew vim
+require_brew rust
 require_brew php
 require_brew openssl
 require_brew mariadb
-# require_brew httpd
+require_brew composer
 require_brew tree
-require_brew fzf
+require_brew imagemagick
+require_brew meilisearch
+require_brew nginx
+require_brew node
+require_brew redis
+require_brew yarn
+require_brew luajit
+require_brew neovim
+require_brew php-cs-fixer
 require_brew jq
-/usr/local/opt/fzf/install
+require_brew fzf
+$(brew --prefix)/opt/fzf/install
 brew install jesseduffield/lazygit/lazygit
 require_brew lsd
 require_brew hub
 require_brew z
+success "Brew Packages installed"
 
 warn "link tmux conf"
 ln -s  $HOME/.dotfiles/tmux/.tmux.conf $HOME/.tmux.conf
@@ -263,72 +265,57 @@ warn "Install tpm"
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 success "when you open tmux,you must type prefix {default: Ctrl+space } + I to install tmux plugins"
 
-require_brew node
-require_brew yarn
-
-require_brew lua
-require_brew ninja
-
-# warn "Install NPM Staff"
-# npm install -g create-react-app
-# npm install -g typescript typescript-language-server
-# success
-
-info "Install vim"
-require_brew vim
-
-require_brew rust
-
 info "Install neovim"
-require_brew luajit
-require_brew neovim
-# info "Configruation nvim"
-# git clone https://github.com/saifulapm/nvim ~/.config/nvim
+git clone https://github.com/saifulapm/nvim ~/.config/nvim
 # success
 info "Install neovim Staff"
 pip3 install pynvim
 npm i -g neovim
-npm install -g intelephense
-# npm i -g write-good
-# require_brew shellcheck
 npm i -g prettier
-# npm install -g markdownlint-cli
-# npm i -g markdownlint
 pip3 install neovim-remote
 cargo install stylua
-require_brew php-cs-fixer
 success "nvim installed"
-# info "Vim Staff"
-# ln -s $HOME/.dotfiles/config/vim ~/.vim
-
-info "Composer Install"
-php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-php -r "if (hash_file('sha384', 'composer-setup.php') === '906a84df04cea2aa72f40b5f787e49f22d4c2f19492ac310e8cba5b96ac8b64115ac402c8cd292b8a03482574915d1a8') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
-php composer-setup.php
-php -r "unlink('composer-setup.php');"
-mv composer.phar /usr/local/bin/composer
-success "composer installed"
+info "Vim Staff"
+ln -s $HOME/.dotfiles/config/vim ~/.vim
+success "Vim and Neovim Done"
 
 warn "Install Shopify Staff"
 brew tap shopify/shopify
 require_brew themekit
 require_brew shopify-cli
-require_brew theme-check
+success "Shopify Staff Done"
 
-warn "Installing Velvet & DBngin"
-# require_cask dbngin
-sudo apachectl stop
-sudo launchctl unload -w /System/Library/LaunchDaemons/org.apache.httpd.plist 2>/dev/null
-composer global require laravel/valet
-# valet install
-mkdir ~/Sites
-# cd ~/Sites
-# valet park
-# cd ..
+# Install PHP extensions with PECL
+info "Install PHP extensions with PECL"
+pecl install imagick redis swoole
 
-warn "PHP IMAP"
+warn "PHP IMAP extension"
 brew tap kabel/php-ext
 require_brew php-imap
+success "PHP extension Done"
+
+info "Installing Composer Packages"
+# Install global Composer packages
+/usr/local/bin/composer global require laravel/installer laravel/valet beyondcode/expose spatie/global-ray spatie/visit
+success "Composer Packages Installed"
+
+info "Creating Directories"
+# Create a Sites directory
+mkdir $HOME/Sites
+# Create sites subdirectories
+mkdir $HOME/Sites/blade-ui-kit
+mkdir $HOME/Sites/laravel
+success "Directories created"
+
+info "Setting Up Valet & Expose"
+# Install Laravel Valet
+$HOME/.composer/vendor/bin/valet install
+# Install Global Ray
+$HOME/.composer/vendor/bin/global-ray install
+success "Valet & Expose Installed"
+
+# Symlink the Mackup config file to the home directory
+ln -s $HOME/.dotfiles/.mackup.cfg $HOME/.mackup.cfg
 
 # ###########################################################
 info " Install Gui Applications"
@@ -337,12 +324,12 @@ info " Install Gui Applications"
 read -r -p "Do you want install kitty? [y|N] " response
 if [[ $response =~ (y|yes|Y) ]];then
   require_cask kitty
+  info "Configuration kitty settings"
+  ln -s $HOME/.dotfiles/config/kitty  $HOME/.config/kitty
+  success "kitty settings configured"
 else
   success "skipped"
 fi
-info "Configuration kitty settings"
-ln -s $HOME/.dotfiles/config/kitty  $HOME/.config/kitty
-success "kitty settings configured"
 
 read -r -p "Do you want install alacritty? [y|N] " response
 if [[ $response =~ (y|yes|Y) ]];then
@@ -353,13 +340,14 @@ if [[ $response =~ (y|yes|Y) ]];then
   cd alacritty
   sudo tic -xe alacritty,alacritty-direct extra/alacritty.Info
   cd .. && rm -rf alacritty
+
+  info "Configuration alacritty settings"
+  ln -s $HOME/.dotfiles/config/alacritty  $HOME/.config/alacritty
+  success "alacritty settings configured"
 else
   success "skipped"
 fi
 
-info "Configuration alacritty settings"
-ln -s $HOME/.dotfiles/config/alacritty  $HOME/.config/alacritty
-success "alacritty settings configured"
 
 read -r -p "Do you want install google-chrome? [y|N] " response
 if [[ $response =~ (y|yes|Y) ]];then
@@ -474,6 +462,124 @@ if [[ $wxresponse =~ (y|yes|Y) ]];then
 else
   success "skipped"
 fi
+
+read -r -p "Do you want install dbngin? [y|N] " wxresponse
+if [[ $wxresponse =~ (y|yes|Y) ]];then
+  require_cask dbngin
+else
+  success "skipped"
+fi
+
+read -r -p "Do you want install firefox? [y|N] " wxresponse
+if [[ $wxresponse =~ (y|yes|Y) ]];then
+  require_cask firefox
+else
+  success "skipped"
+fi
+
+read -r -p "Do you want install helo (Email tester and debugger)? [y|N] " wxresponse
+if [[ $wxresponse =~ (y|yes|Y) ]];then
+  require_cask helo
+else
+  success "skipped"
+fi
+
+read -r -p "Do you want install imageoptim? [y|N] " wxresponse
+if [[ $wxresponse =~ (y|yes|Y) ]];then
+  require_cask imageoptim
+else
+  success "skipped"
+fi
+
+read -r -p "Do you want install phpmon? [y|N] " wxresponse
+if [[ $wxresponse =~ (y|yes|Y) ]];then
+  require_cask phpmon
+else
+  success "skipped"
+fi
+
+read -r -p "Do you want install phpstorm? [y|N] " wxresponse
+if [[ $wxresponse =~ (y|yes|Y) ]];then
+  require_cask phpstorm
+else
+  success "skipped"
+fi
+
+read -r -p "Do you want install ray? [y|N] " wxresponse
+if [[ $wxresponse =~ (y|yes|Y) ]];then
+  require_cask ray
+else
+  success "skipped"
+fi
+
+read -r -p "Do you want install screenflow? [y|N] " wxresponse
+if [[ $wxresponse =~ (y|yes|Y) ]];then
+  require_cask screenflow
+else
+  success "skipped"
+fi
+
+read -r -p "Do you want install tableplus? [y|N] " wxresponse
+if [[ $wxresponse =~ (y|yes|Y) ]];then
+  require_cask tableplus
+else
+  success "skipped"
+fi
+
+read -r -p "Do you want install tinkerwell? [y|N] " wxresponse
+if [[ $wxresponse =~ (y|yes|Y) ]];then
+  require_cask tinkerwell
+else
+  success "skipped"
+fi
+
+read -r -p "Do you want install transmit? [y|N] " wxresponse
+if [[ $wxresponse =~ (y|yes|Y) ]];then
+  require_cask transmit
+else
+  success "skipped"
+fi
+
+read -r -p "Do you want install qlmarkdown? [y|N] " wxresponse
+if [[ $wxresponse =~ (y|yes|Y) ]];then
+  require_cask qlmarkdown
+else
+  success "skipped"
+fi
+
+read -r -p "Do you want install quicklook-json? [y|N] " wxresponse
+if [[ $wxresponse =~ (y|yes|Y) ]];then
+  require_cask quicklook-json
+else
+  success "skipped"
+fi
+
+read -r -p "Do you want install pastebot? [y|N] " wxresponse
+if [[ $wxresponse =~ (y|yes|Y) ]];then
+  require_cask pastebot
+else
+  success "skipped"
+fi
+
+info "Installing Mac App Store Apps"
+# Mac App Store
+# mas 'Byword', id: 420212497
+info "Installing Giphy Capture"
+mas 'Giphy Capture', id: 668208984
+success "Done Giphy Capture"
+info "Installing Keynote"
+mas 'Keynote', id: 409183694
+success "Done Keynote"
+info "Installing Pages"
+mas 'Pages', id: 409201541
+success "Done Pages"
+info "Installing Numbers"
+mas 'Numbers', id: 409203825
+success "Done Numbers"
+info "Installing Spark"
+mas 'Spark', id: 1176895641
+success "Done Spark"
+# mas 'Things', id: 904280696
 
 brew update && brew upgrade && brew cleanup
 
